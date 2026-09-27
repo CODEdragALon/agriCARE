@@ -1,0 +1,73 @@
+{% extends "base.html" %}{% set step = 3 %}
+{% block body %}
+{% set p = r.profile %}
+<div class="hero">
+  <div class="sub">If a failure goes unnoticed today, you could lose</div>
+  <div class="big">{{ count(r.fish_at_risk) }} fish · {{ money(r.dollars_at_risk) }}</div>
+  <div class="sub">{{ (r.current_share*100)|round|int }}% of your stock, based on your {{ p.survival_hours|round(2) }}-hour survival window.</div>
+  <div class="after">Fix the fish-safety checks and that drops to <b>{{ count(r.fish_after_fixes) }} fish · {{ money(r.dollars_after_fixes) }}</b>.</div>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">{{ r.passed_count }} / 9</div><div class="l">checks passed</div></div>
+  <div class="kpi"><div class="v">{{ money(r.fraud_exposure) }}</div><div class="l">fraud exposure per fake invoice</div></div>
+  <div class="kpi"><div class="v">{{ money(r.outage_loss) }}</div><div class="l">extra sales lost in a ransomware outage</div></div>
+</div>
+
+{% if r.top_fixes %}
+<h2>Fix these first</h2>
+<ol class="top3">{% for t in r.top_fixes %}
+  <li>{{ t.fix }} <span class="cost">{{ t.cost }}</span>{% if t.saving %} — saves about <b>{{ money(t.saving) }}</b>{% endif %}</li>
+{% endfor %}</ol>
+{% else %}
+<div class="box ok"><h3>All 9 checks pass</h3><p>Keep testing alarms and backups, and re-check when you add equipment or suppliers.</p></div>
+{% endif %}
+
+{% if p.insured %}
+  {% if r.insurer_gaps %}
+  <div class="box warn"><h3>Insurer: {{ r.insurer_gaps|length }} gap(s)</h3>
+    <p>Insurers survey alarms, backups and how staff respond, and can make them policy conditions. Missing or undisclosed items can cut or cancel a claim.</p>
+    <p><b>At stake: up to {{ money(p.stock) }}</b> of stock if a claim is refused.</p></div>
+  {% else %}
+  <div class="box ok"><h3>Insurer: ready</h3><p>Alarms, backup and manual checks are in place — the items insurance surveyors look for.</p></div>
+  {% endif %}
+{% else %}
+  <div class="box warn"><h3>No stock insurance</h3><p>Every dollar above is yours to cover. Insurers will ask about alarms and backups if you apply —
+    {% if r.insurer_gaps %}{{ r.insurer_gaps|length }} of those are still gaps.{% else %}you already pass those.{% endif %}</p></div>
+{% endif %}
+
+{% if p.needs_globalgap %}
+  {% if r.globalgap_gaps %}
+  <div class="box warn"><h3>GLOBALG.A.P.: {{ r.globalgap_gaps|length }} gap(s)</h3>
+    <p>Auditors check these every year, and some visits are unannounced. Keep records ready at all times.</p>
+    <p><b>At stake: {{ money(p.sales) }}</b> a year in sales to buyers who require the certificate.</p></div>
+  {% else %}
+  <div class="box ok"><h3>GLOBALG.A.P.: ready</h3><p>Alarm testing, backup and record items pass.</p></div>
+  {% endif %}
+{% else %}
+  <div class="box"><h3>GLOBALG.A.P.</h3><p>Not required by your buyers. If that changes,
+    {% if r.globalgap_gaps %}{{ r.globalgap_gaps|length }} item(s) below need work first.{% else %}you already meet the items this tool checks.{% endif %}</p></div>
+{% endif %}
+
+<h2 class="mt">All checks</h2>
+{% for c in r.results %}
+<div class="row">
+  <div class="h"><span class="n">{{ c.question }}</span><span class="badge {{ 'pass' if c.passed else 'fix' }}">{{ 'PASS' if c.passed else 'FIX' }}</span></div>
+  <div class="req">Required by: {{ c.required_by | join(' · ') }}</div>
+  {% if not c.passed %}
+  <div class="loss">{{ c.loss_text }}</div>
+  <div class="todo"><b>Fix:</b> {{ c.fix }} <span class="cost">{{ c.cost }}</span></div>
+  {% endif %}
+</div>
+{% endfor %}
+
+<p class="disc">{{ p.wording.name | capitalize }} farm. Self-assessment from your own answers — not an audit, certificate or insurance advice. Dollar figures are estimates; see sources and assumptions.</p>
+
+<details><summary>Sources and assumptions</summary>
+<ul>{% for s in sources %}<li>{{ s }}</li>{% endfor %}</ul></details>
+
+<div class="nav noprint">
+  <a class="b2" href="{{ url_for('profile_page') }}">Start over</a>
+  <button class="b1" onclick="window.print()">Print / save PDF</button>
+</div>
+{% endblock %}

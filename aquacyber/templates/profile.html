@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% set step = 1 %}
+{% block body %}
+<h1>Your farm</h1>
+<p>Seven quick numbers. They turn risk into fish and dollars.</p>
+<div class="demo">
+  <a href="{{ url_for('demo', kind='netpen') }}">Demo: BC salmon net-pen</a>
+  <a href="{{ url_for('demo', kind='ras') }}">Demo: Ontario trout tanks</a>
+</div>
+{% if error %}<p class="err">{{ error }}</p>{% endif %}
+<form method="post" action="{{ url_for('checks_page') }}">
+  <div class="f"><label for="farm_type">Type of farm</label>
+    <select id="farm_type" name="farm_type" required>
+      <option value="">Choose...</option>
+      {% for k, t in farm_types.items() %}<option value="{{ k }}">{{ t.name | capitalize }}</option>{% endfor %}
+    </select></div>
+  <div class="f"><label for="fish">Fish on site (approx. number)</label>
+    <input id="fish" name="fish" type="number" min="0" placeholder="e.g. 60000"></div>
+  <div class="f"><label for="stock">Value of that stock (CAD)</label>
+    <input id="stock" name="stock" type="number" min="1" required placeholder="e.g. 400000"></div>
+  <div class="f"><label for="survival_hours">Hours your fish last if oxygen, aeration or water flow stops</label>
+    <input id="survival_hours" name="survival_hours" type="number" min="0.25" step="0.25" required placeholder="e.g. 2">
+    <div class="hint">{{ hints.default }}<br>Ponds: {{ hints.pond }}</div></div>
+  <div class="f"><label for="sales">Yearly sales (CAD)</label>
+    <input id="sales" name="sales" type="number" min="0" placeholder="e.g. 900000"></div>
+  <div class="f"><label for="monthly_payments">Paid to suppliers by bank transfer each month (CAD)</label>
+    <input id="monthly_payments" name="monthly_payments" type="number" min="0" placeholder="e.g. 30000"></div>
+  <div class="f"><label>Do you carry stock-mortality insurance?</label>
+    <div class="yn"><label><input type="radio" name="insured" value="yes" required> Yes</label>
+    <label><input type="radio" name="insured" value="no"> No</label></div></div>
+  <div class="f"><label>Do your buyers require GLOBALG.A.P. certification?</label>
+    <div class="yn"><label><input type="radio" name="needs_globalgap" value="yes" required> Yes</label>
+    <label><input type="radio" name="needs_globalgap" value="no"> No</label></div></div>
+  <div class="nav"><button class="b1" type="submit">Next: 9 checks</button></div>
+</form>
+{% endblock %}

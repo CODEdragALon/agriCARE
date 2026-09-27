@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AquaCyber — Fish Farm Risk Check</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="top">
+  <a href="{{ url_for('profile_page') }}" class="brand">AquaCyber</a>
+  <div class="steps">
+    <span class="{{ 'on' if step==1 else 'done' if step>1 }}">1 Your farm</span>
+    <span class="{{ 'on' if step==2 else 'done' if step>2 }}">2 Checks</span>
+    <span class="{{ 'on' if step==3 }}">3 Report</span>
+  </div>
+</div>
+<main>{% block body %}{% endblock %}</main>
+</body>
+</html>
