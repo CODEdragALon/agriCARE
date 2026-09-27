@@ -1,5 +1,5 @@
-from aquacyber import engine
-from aquacyber.engine import Profile, assess, fish_loss_share
+from aquacare import engine
+from aquacare.engine import Profile, assess, fish_loss_share
 
 ALL_YES = {k: True for k in engine.CHECK_KEYS}
 ALL_NO = {k: False for k in engine.CHECK_KEYS}

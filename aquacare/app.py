@@ -1,6 +1,6 @@
-"""AquaCyber Flask app. Run: flask --app app run"""
+"""AquaCare Flask app. Run: flask --app app run"""
 from flask import Flask, render_template, request, abort
-from aquacyber import engine
+from aquacare import engine
 
 app = Flask(__name__)
 app.jinja_env.globals.update(money=engine.money, count=engine.count)

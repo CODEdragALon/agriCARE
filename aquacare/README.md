@@ -1,4 +1,4 @@
-# AquaCyber
+# AquaCare
 
 A 5-minute cyber risk check for small fish and shellfish farms.
 It turns cyber and equipment gaps into **fish and dollars at risk**, shows **PASS / FIX** for 9 checks
@@ -31,7 +31,7 @@ Any Python host (Render, Railway, Fly.io, Heroku-style) works. Start command: `g
 
 ```
 app.py                 Flask routes (profile -> checks -> report, plus demos)
-aquacyber/engine.py    Risk engine: checks, fish-loss model, report data, sources
+aquacare/engine.py    Risk engine: checks, fish-loss model, report data, sources
 templates/             Jinja pages (base, profile, checks, report)
 static/style.css       Styles (light/dark, print-friendly)
 tests/                 Engine and app tests

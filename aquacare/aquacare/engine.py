@@ -1,4 +1,4 @@
-"""Risk engine for AquaCyber.
+"""Risk engine for AquaCare.
 
 All model constants below are OUR ASSUMPTIONS, not cited statistics.
 They are listed in SOURCES so the report shows them openly.
